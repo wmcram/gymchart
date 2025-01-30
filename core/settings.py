@@ -133,6 +133,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'scrape_charts': {
         'task': 'charts.tasks.scrape_charts',
-        'schedule': 5.0
+        'schedule': 300.0
     }
 }

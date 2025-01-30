@@ -9,7 +9,11 @@ click-plugins==1.1.1
 click-repl==0.3.0
 Django==5.1.5
 django-htmx==1.21.0
+gunicorn==23.0.0
 kombu==5.4.2
+narwhals==1.24.1
+packaging==24.2
+plotly==6.0.0
 prompt_toolkit==3.0.50
 python-dateutil==2.9.0.post0
 redis==5.2.1

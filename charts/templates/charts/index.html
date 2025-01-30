@@ -1,39 +1,58 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="container mx-auto p-4">
-    <!-- AlpineJS Example: Toggle Visibility -->
-    <div x-data="{ isOpen: false }" class="mb-8">
-        <button @click="isOpen = !isOpen" class="btn btn-primary">
-            Toggle AlpineJS Content
-        </button>
-        <div x-show="isOpen" x-cloak class="mt-4 p-4 bg-gray-100 rounded-lg">
-            <p>This content is toggled using AlpineJS!</p>
+<h1>Badger Gyms</h1>
+<div x-data="{ activeTab: '{{ metric_types.first.id }}', isDropdownOpen: false }" class="max-w-6xl mx-auto">
+        <!-- Dropdown Navigation -->
+        <div class="dropdown mb-8">
+            <button 
+                class="btn btn-primary dropdown-toggle"
+                @click="isDropdownOpen = !isDropdownOpen"
+                :aria-expanded="isDropdownOpen"
+            >
+                {{ metric_types.first.display_name }} 
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <ul 
+                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                x-show="isDropdownOpen"
+                @click.away="isDropdownOpen = false"
+            >
+                {% for metric_type in metric_types %}
+                <li>
+                    <button 
+                        class="btn btn-ghost"
+                        :class="{ 'btn-active': activeTab === '{{ metric_type.id }}' }"
+                        @click="activeTab = '{{ metric_type.id }}'; isDropdownOpen = false;"
+                        hx-get="{% url 'metric_chart' metric_type.id %}"
+                        hx-trigger="click"
+                        hx-target="#chart-display"
+                        hx-swap="innerHTML"
+                    >
+                        {{ metric_type.display_name }}
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-    </div>
 
-    <!-- HTMX Example: Load Content on Page Load -->
-    <div hx-get="{% url 'partial' %}" hx-trigger="load" class="mb-8">
-        <p class="text-gray-600">Loading content with HTMX...</p>
-    </div>
+        <!-- Chart Display Area -->
+        <div class="card bg-base-100 shadow-xl">
+            <div 
+                id="chart-display" 
+                class="card-body"
+                hx-get="{% url 'metric_chart' metric_types.0.id %}" 
+                hx-trigger="load" 
+                hx-swap="innerHTML"
+            >
+            <div class="flex justify-center items-center h-32">
+                <span class="loading loading-spinner loading-lg"></span>
+            </div>
 
-    <!-- HTMX Example: Load Content on Button Click -->
-    <div class="mb-8">
-        <button class="btn btn-secondary" hx-get="{% url 'partial' %}" hx-target="#result">
-            Load Content with HTMX
-        </button>
-        <div id="result" class="mt-4 p-4 bg-blue-50 rounded-lg">
-            <p class="text-gray-600">Content will appear here when the button is clicked.</p>
+            </div>
         </div>
-    </div>
-
-    <!-- DaisyUI Example: Styled Card -->
-    <div class="card bg-base-100 shadow-xl mb-8">
-        <div class="card-body">
-            <h2 class="card-title">DaisyUI Styled Card</h2>
-            <p>This card is styled using DaisyUI, a Tailwind CSS component library.</p>
-        </div>
-    </div>
-
 </div>
+  
+  
 {% endblock %}

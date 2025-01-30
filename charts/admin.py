@@ -1,3 +1,4 @@
 from django.contrib import admin
+from charts.models import MetricType
 
-# Register your models here.
+admin.site.register(MetricType)

@@ -4,3 +4,7 @@ db.sqlite3
 node_modules/
 __pycache__
 dump.rdb
+
+# Celery Beat schedule files
+celerybeat-schedule
+celerybeat-schedule.db
